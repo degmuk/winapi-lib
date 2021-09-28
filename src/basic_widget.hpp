@@ -37,7 +37,7 @@ class BasicWidget {
 
   static const std::wstring kBaseClassName;
 
-  BasicWidget(const std::wstring& title, int pos_x = CW_USEDEFAULT,
+  BasicWidget(const std::wstring& title, LONG style, int pos_x = CW_USEDEFAULT,
               int pos_y = CW_USEDEFAULT, int width = CW_USEDEFAULT,
               int height = CW_USEDEFAULT, BasicWidget* parent = nullptr,
               const std::wstring& class_name = kBaseClassName);

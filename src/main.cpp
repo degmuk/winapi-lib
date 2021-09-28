@@ -3,6 +3,5 @@
 
 int main() {
   Widget widget(L"Library demo");
-  widget.Show();
   Application::Run();
 }

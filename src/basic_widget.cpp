@@ -11,9 +11,14 @@ const std::wstring BasicWidget::kBaseClassName = L"Base class";
 WNDCLASS BasicWidget::window_class_;
 
 void BasicWidget::Init(HINSTANCE instance) {
-  window_class_ = WNDCLASS{.lpfnWndProc = BasicWidget::WindowProcedure,
-                           .hInstance = instance,
-                           .lpszClassName = kBaseClassName.c_str()};
+  window_class_ = WNDCLASS{
+      .style = CS_HREDRAW | CS_VREDRAW,
+      .lpfnWndProc = BasicWidget::WindowProcedure,
+      .hInstance = instance,
+      .hCursor = LoadCursor(nullptr, IDC_ARROW),
+      .hbrBackground = GetSysColorBrush(COLOR_3DFACE),
+      .lpszClassName = kBaseClassName.c_str(),
+  };
   RegisterClass(&window_class_);
 }
 
@@ -43,7 +48,7 @@ SIZE BasicWidget::GetSize() const {
 
 std::wstring BasicWidget::GetTitle() const {
   std::array<wchar_t, 1000> buf{};
-  GetWindowTextW(handle_, buf.data(), buf.size());
+  GetWindowText(handle_, buf.data(), buf.size());
   return buf.data();
 }
 
@@ -61,12 +66,14 @@ void BasicWidget::SetTitle(std::wstring& title) const {
   SetWindowTextW(handle_, title.c_str());
 }
 
-BasicWidget::BasicWidget(const std::wstring& title, int pos_x, int pos_y,
-                         int width, int height, BasicWidget* parent,
+BasicWidget::BasicWidget(const std::wstring& title, LONG style, int pos_x,
+                         int pos_y, int width, int height, BasicWidget* parent,
                          const std::wstring& class_name)
     : parent_(parent) {
   auto* app = Application::GetInstance();
-  auto style = parent_ == nullptr ? WS_OVERLAPPEDWINDOW : WS_CHILD;
+  if (parent != nullptr && (style & WS_CHILDWINDOW) == 0) {
+    style |= WS_CHILD;
+  }
   handle_ =
       CreateWindowEx(0, class_name.c_str(), title.c_str(), style, pos_x, pos_y,
                      width, height, parent_ != nullptr ? parent_->handle_ : 0,
@@ -97,7 +104,7 @@ BasicWidget::CallbackResult BasicWidget::CommandEvent(
   switch (HIWORD(w_param)) {
     case BN_CLICKED: {
       HWND button_handle = reinterpret_cast<HWND>(l_param);
-      Button* button = static_cast<Button*>(GetThisFromHandle(button_handle));
+      Button* button = dynamic_cast<Button*>(GetThisFromHandle(button_handle));
       assert(button != nullptr);
       assert(children.contains(button));
       button->Clicked();
