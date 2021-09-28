@@ -2,17 +2,17 @@
 #define WIDGET_HPP_
 
 #include "src/basic_widget.hpp"
+#include "src/button.hpp"
 
 class Widget : public BasicWidget {
  public:
-  Widget(const std::wstring& title) : BasicWidget(title) {}
+  Widget(const std::wstring& title) : BasicWidget(title) { button_.Show(); }
 
  private:
-  CallbackResult DestroyEvent() override {
-    PostQuitMessage(0);
-    return 0;
-  }
-
+  Button button_ =
+      Button(this, 100, 100, L"Hello ZAWARUOD TOKIWA TOMARE", []() {
+        MessageBoxW(0, L"Hello!", L"Message", MB_ICONINFORMATION | MB_OK);
+      });
   CallbackResult PaintEvent() override {
     PAINTSTRUCT ps;
     HDC hdc = BeginPaint(GetHandle(), &ps);

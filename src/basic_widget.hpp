@@ -22,6 +22,14 @@ class BasicWidget {
   void Show();
   void Hide();
 
+  POINT GetPosition() const;
+  SIZE GetSize() const;
+  std::wstring GetTitle() const;
+
+  void SetPosition(const POINT& pos) const;
+  void SetSize(const SIZE& size) const;
+  void SetTitle(std::wstring& title) const;
+
  protected:
   using CallbackResult = std::optional<LRESULT>;
 
@@ -29,29 +37,38 @@ class BasicWidget {
 
   static const std::wstring kBaseClassName;
 
-  BasicWidget(const std::wstring& title, int width = CW_USEDEFAULT,
+  BasicWidget(const std::wstring& title, int pos_x = CW_USEDEFAULT,
+              int pos_y = CW_USEDEFAULT, int width = CW_USEDEFAULT,
               int height = CW_USEDEFAULT, BasicWidget* parent = nullptr,
               const std::wstring& class_name = kBaseClassName);
 
   virtual ~BasicWidget();
 
-  virtual CallbackResult DestroyEvent() { return std::nullopt; }
-  virtual CallbackResult PaintEvent() { return std::nullopt; }
+  virtual CallbackResult DestroyEvent();
+  virtual CallbackResult PaintEvent();
+  virtual CallbackResult CommandEvent([[maybe_unused]] WPARAM w_param,
+                                      [[maybe_unused]] LPARAM l_param);
+
+  SIZE GetTextSize(const std::wstring& text);
 
  private:
-  std::optional<LRESULT> HandleMessage(UINT message, WPARAM w_param,
-                                       LPARAM l_param);
-
   static LRESULT WindowProcedure(HWND hwnd, UINT msg, WPARAM w_param,
                                  LPARAM l_param);
+
+  static BasicWidget* GetThisFromHandle(HWND handle);
+
   static WNDCLASS window_class_;
+
+  CallbackResult HandleMessage(UINT message, WPARAM w_param, LPARAM l_param);
+
+  void RegisterHandle();
 
   void RegisterChild(BasicWidget* window);
   void UnregisterChild(BasicWidget* widget);
 
   BasicWidget* parent_;
   std::unordered_set<BasicWidget*> children;
-  HWND handle_ = nullptr;
+  HWND handle_ = 0;
 };
 
 #endif  // BASIC_WIDGET_HPP_

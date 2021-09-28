@@ -26,6 +26,7 @@ set(CMAKE_C_FLAGS_DEBUG ${COMMON_FLAGS_DEBUG})
 set(SOURCES
   src/application.cpp
   src/basic_widget.cpp
+  src/button.cpp
   src/main.cpp
   src/widget.cpp
 )
