@@ -27,6 +27,7 @@ set(SOURCES
   src/application.cpp
   src/basic_widget.cpp
   src/button.cpp
+  src/label.cpp
   src/main.cpp
   src/widget.cpp
 )
