@@ -28,6 +28,7 @@ set(SOURCES
   src/basic_widget.cpp
   src/button.cpp
   src/label.cpp
+  src/listbox.cpp
   src/main.cpp
   src/widget.cpp
 )
