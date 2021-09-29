@@ -68,16 +68,16 @@ void BasicWidget::SetTitle(std::wstring& title) const {
 
 BasicWidget::BasicWidget(const std::wstring& title, LONG style, int pos_x,
                          int pos_y, int width, int height, BasicWidget* parent,
-                         const std::wstring& class_name)
+                         const std::wstring& class_name, int ex_style)
     : parent_(parent) {
   auto* app = Application::GetInstance();
   if (parent != nullptr && (style & WS_CHILDWINDOW) == 0) {
     style |= WS_CHILD;
   }
-  handle_ =
-      CreateWindowEx(0, class_name.c_str(), title.c_str(), style, pos_x, pos_y,
-                     width, height, parent_ != nullptr ? parent_->handle_ : 0,
-                     nullptr, app->GetHInstance(), this);
+  handle_ = CreateWindowEx(ex_style, class_name.c_str(), title.c_str(), style,
+                           pos_x, pos_y, width, height,
+                           parent_ != nullptr ? parent_->handle_ : 0, nullptr,
+                           app->GetHInstance(), this);
   assert(handle_ != nullptr);
   RegisterHandle();
   if (parent_ != nullptr) {
