@@ -5,6 +5,8 @@
 #include "src/button.hpp"
 #include "src/label.hpp"
 #include "src/listbox.hpp"
+#include "src/multiline_edit.hpp"
+#include "src/singleline_edit.hpp"
 
 class Widget : public BasicWidget {
  public:
@@ -22,6 +24,10 @@ class Widget : public BasicWidget {
     MessageBoxW(0, L"Текст", L"Заголовок", MB_ICONINFORMATION | MB_OK);
     listbox_.AddLine(L"Fuck you!");
   });
+
+  SingleLineEdit edit_ = SingleLineEdit(this, 320, 0, 100);
+
+  MultiLineEdit medit_ = MultiLineEdit(this, 320, 40, 150, 150);
 };
 
 #endif  // WIDGET_HPP_

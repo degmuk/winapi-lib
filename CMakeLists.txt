@@ -27,9 +27,12 @@ set(SOURCES
   src/application.cpp
   src/basic_widget.cpp
   src/button.cpp
+  src/edit.cpp
   src/label.cpp
   src/listbox.cpp
   src/main.cpp
+  src/singleline_edit.cpp
+  src/multiline_edit.cpp
   src/widget.cpp
 )
 

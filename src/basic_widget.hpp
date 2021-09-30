@@ -33,8 +33,6 @@ class BasicWidget {
  protected:
   using CallbackResult = std::optional<LRESULT>;
 
-  HWND GetHandle() { return handle_; }
-
   static const std::wstring kBaseClassName;
 
   BasicWidget(const std::wstring& title, LONG style, int pos_x = CW_USEDEFAULT,
@@ -49,6 +47,8 @@ class BasicWidget {
   virtual CallbackResult PaintEvent();
   virtual CallbackResult CommandEvent([[maybe_unused]] WPARAM w_param,
                                       [[maybe_unused]] LPARAM l_param);
+
+  HWND GetHandle() const { return handle_; }
 
   SIZE GetTextSize(const std::wstring& text);
 
