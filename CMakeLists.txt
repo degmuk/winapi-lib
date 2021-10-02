@@ -8,14 +8,12 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_C_STANDARD 11)
 
-set(WINAPI_LIBS ole32 oleaut32 uuid)
-
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   link_libraries(-static)
   set(COMMON_FLAGS "-mwindows -municode -Wall -Wextra -Wno-missing-field-initializers")
-  set(COMMON_FLAGS_DEBUG "-g3 -Og")
+  set(COMMON_FLAGS_DEBUG "-g -O0")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-  set(flags "/Wall")
+  set(COMMON_FLAGS "/Wall /DUNICODE /D_UNICODE /utf-8")
 endif()
 
 set(CMAKE_CXX_FLAGS ${COMMON_FLAGS})
@@ -36,4 +34,8 @@ set(SOURCES
   src/widget.cpp
 )
 
-add_executable(${PROJECT_NAME}.exe ${SOURCES})
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  add_executable(${PROJECT_NAME}.exe ${SOURCES})
+else()
+  add_executable(${PROJECT_NAME} ${SOURCES})
+endif()
