@@ -17,12 +17,12 @@ class Widget : public BasicWidget {
   }
 
  private:
-  Label label_ = Label(this, 0, 0, L"Fuck ты");
+  Label label_ = Label(this, 0, 0, L"Текст0");
   ListBox listbox_ = ListBox(this, 100, 0, 200, 200);
 
   Button button_ = Button(this, 0, 20, L"Юникод", [this]() {
     MessageBoxW(0, L"Текст", L"Заголовок", MB_ICONINFORMATION | MB_OK);
-    listbox_.AddLine(L"Fuck you!");
+    listbox_.AddLine(L"Текст1!");
   });
 
   SingleLineEdit edit_ = SingleLineEdit(this, 320, 0, 100);
